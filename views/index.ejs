@@ -55,70 +55,81 @@
   </style>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
   <script>
-  //앱선언 
-  var myApp=angular.module("myApp",[]);
-  myApp.run(function($rootScope){
-  });
+    //앱선언 
+    var myApp = angular.module("myApp", []);
+    myApp.run(function ($rootScope, $http) {
+      $rootScope.list = [];
+      $rootScope.list.push({});
+      $rootScope.list.push({});
+      $rootScope.list.push({});
 
-  myApp.controller("registController", function($scope, $http){
-    $scope.regist=function(){
-      $http({
-        url:"/member/regist",
-        method:"post",
-        data:JSON.stringify({
-          name:$scope.name,
-          email:$scope.email,
-          age:$scope.age  
-        })
-      }).then(function(response){
-        alert(response.data);
-      } , function(error_response){
-        alert(error_response.statusText);
-      });//ajax
-    }
-  });
-  myApp.controller("detailController", function($scope){
+      //회원목록 가져오기!!!
+      $rootScope.getList = function () {
+        alert("목록 지금 조회할께요");
 
-});
+        $http({
+          url: "/member/list",
+          method: "get"
+        }).then(function (response) {
+          alert(response.data);
+        }, function (error_response) {
+          alert(error_response.statusText);
+        });
+      }
+
+      $rootScope.getList();
+    });
+
+
+    myApp.controller("registController", function ($scope, $http) {
+      $scope.regist = function () {
+        $http({
+          url: "/member/regist",
+          method: "post",
+          data: JSON.stringify({
+            name: $scope.name,
+            email: $scope.email,
+            age: $scope.age
+          })
+        }).then(function (response) {
+          alert(response.data);
+        }, function (error_response) {
+          alert(error_response.statusText);
+        });//ajax
+      }
+    });
+    myApp.controller("detailController", function ($scope) {
+
+    });
 
   </script>
 </head>
 
 <body>
   <div class="wrapper" ng-app="myApp">
-    
+
     <div class="registSide" ng-controller="registController">
-      <input type="text" placeholder="이름" ng-model="name"/>
-      <input type="text" placeholder="이메일" ng-model="email"/>
-      <input type="text" placeholder="나이" ng-model="age"/>
+      <input type="text" placeholder="이름" ng-model="name" />
+      <input type="text" placeholder="이메일" ng-model="email" />
+      <input type="text" placeholder="나이" ng-model="age" />
       <button ng-click="regist()">등록</button>
     </div>
     <div class="center">
 
       <div style="text-align: center">
-        <input type="text"/>        
+        <input type="text" />
       </div>
 
       <table>
         <tr>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>Points</th>
+          <th>이름</th>
+          <th>이메일</th>
+          <th>나이</th>
         </tr>
-        <tr>
+        <tr ng-repeat="x in list">
           <td>Jill</td>
           <td>Smith</td>
           <td>50</td>
-        </tr>
-        <tr>
-          <td>Eve</td>
-          <td>Jackson</td>
-          <td>94</td>
-        </tr>
-        <tr>
-          <td>Adam</td>
-          <td>Johnson</td>
-          <td>67</td>
         </tr>
       </table>
 
