@@ -51,7 +51,15 @@
 
     tr:nth-child(even) {
         background-color: #f2f2f2
-    }    
+    }  
+    .over{
+      font-size:26px;
+      font-weight:bold;
+    } 
+    .out{
+      font-size:16px;
+      font-weight:normal;
+    } 
   </style>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
   <script>
@@ -79,6 +87,22 @@
       }
 
       $rootScope.getList();
+
+      //상세보기 요청 함수 
+      $rootScope.getDetail=function(member_id){
+        alert("당신이 선택한 글의 id는 "+member_id);
+
+        $http({
+          url:"/member/detail",
+          method:"get",
+          param:JSON.stringify({
+            member_id:member_id
+          })            
+        }).then(function(response){
+
+        });    
+      }
+
     });
 
 
@@ -121,7 +145,7 @@
     <div class="center">
 
       <div style="text-align: center">
-        <input type="text" />
+        <input type="text" ng-model="keyword"/>
       </div>
 
       <table>
@@ -130,7 +154,7 @@
           <th>이메일</th>
           <th>나이</th>
         </tr>
-        <tr ng-repeat="x in list">
+        <tr ng-repeat="x in list | filter : keyword" ng-click="getDetail(x.member_id)"   class="{{effect}}" ng-mouseover="effect='over'" ng-mouseout="effect='out'">
           <td>{{x.name}}</td>
           <td>{{x.email}}</td>
           <td>{{x.age}}</td>
