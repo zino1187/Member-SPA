@@ -88,20 +88,6 @@
 
       $rootScope.getList();
 
-      //상세보기 요청 함수 
-      $rootScope.getDetail=function(member_id){
-        alert("당신이 선택한 글의 id는 "+member_id);
-
-        $http({
-          url:"/member/detail",
-          method:"get",
-          params:{member_id:member_id}           
-        }).then(function(response){
-          //response.data //데이터 1건을 나타내는 json 객체가
-          //넘어올 예정..
-          alert(response.data);
-        });    
-      }
 
     });
 
@@ -126,7 +112,23 @@
         });//ajax
       }
     });
-    myApp.controller("detailController", function ($scope) {
+    myApp.controller("detailController", function ($rootScope, $scope,$http) {
+      //상세보기 요청 함수 
+      $rootScope.getDetail=function(member_id){
+        alert("당신이 선택한 글의 id는 "+member_id);
+
+        $http({
+          url:"/member/detail",
+          method:"get",
+          params:{member_id:member_id}           
+        }).then(function(response){
+          //response.data //데이터 1건을 나타내는 json 객체가
+          //넘어올 예정..
+          $scope.name=response.data.name;
+          $scope.email=response.data.email;
+          $scope.age=response.data.age;
+        });    
+      }
 
     });
 
@@ -163,9 +165,9 @@
 
     </div>
     <div class="detailSide" ng-controller="detailController">
-      <input type="text" placeholder="이름" />
-      <input type="text" placeholder="이메일" />
-      <input type="text" placeholder="나이" />
+      <input type="text" placeholder="이름"    ng-model="name"/>
+      <input type="text" placeholder="이메일" ng-model="email"/>
+      <input type="text" placeholder="나이"   ng-model="age"/>
       <button>수정</button>
       <button>삭제</button>
     </div>

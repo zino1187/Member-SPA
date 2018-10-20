@@ -77,7 +77,7 @@ router.get("/detail", function (req, res, next) {
           console.log(err);
         }else{
           res.writeHead(200, { "Content-Type": "text/json" });
-          res.end(JSON.stringify(result));
+          res.end(JSON.stringify(result[0]));
         }
         pool.releaseConnection(function(e){});
       });
