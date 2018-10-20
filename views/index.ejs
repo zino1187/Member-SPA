@@ -127,9 +127,31 @@
           $scope.name=response.data.name;
           $scope.email=response.data.email;
           $scope.age=response.data.age;
+          $scope.member_id=response.data.member_id;
+
         });    
       }
+      
+      //삭제 
+      $scope.del=function(id){
+        alert("당신이 삭제할 아이디는 "+ id);
 
+        $http({
+          url:"/member/delete",
+          method:"get",
+          params:{member_id:id}
+        }).then(function(response){
+          if(response.data.result==0){
+            alert("삭제실패");
+          } else{
+            alert("삭제성공");  
+            //리스트 재호출!!!
+            $rootScope.getList(); 
+          } 
+        });        
+      }
+
+      //수정
     });
 
   </script>
@@ -168,8 +190,9 @@
       <input type="text" placeholder="이름"    ng-model="name"/>
       <input type="text" placeholder="이메일" ng-model="email"/>
       <input type="text" placeholder="나이"   ng-model="age"/>
-      <button>수정</button>
-      <button>삭제</button>
+      <input type="hidden" ng-model="member_id"/>
+      <button ng-click="edit()">수정</button>
+      <button ng-click="del(member_id)">삭제</button>
     </div>
   </div>
 </body>

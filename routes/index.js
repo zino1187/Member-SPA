@@ -50,11 +50,11 @@ router.get("/list", function (req, res, next) {
       con.query(sql, function (err, result, fields) {
         if (err) {
           console.log(err);
-        }else{
+        } else {
           res.writeHead(200, { "Content-Type": "text/json" });
           res.end(JSON.stringify(result));
         }
-        pool.releaseConnection(function(e){});
+        pool.releaseConnection(function (e) { });
       });
     }
   });
@@ -65,23 +65,55 @@ router.get("/list", function (req, res, next) {
 router.get("/detail", function (req, res, next) {
   //get방식으로 전송된 파라미터는 query로 받는다
   //req.query 는 {member_id:3}  
-  var member_id=req.query.member_id;
+  var member_id = req.query.member_id;
 
   pool.getConnection(function (error, con) {
     if (error) {
       console.log(error);
     } else {
       var sql = "select * from member where member_id=?";
-      con.query(sql,[member_id],function (err, result, fields) {
+      con.query(sql, [member_id], function (err, result, fields) {
         if (err) {
           console.log(err);
-        }else{
+        } else {
           res.writeHead(200, { "Content-Type": "text/json" });
           res.end(JSON.stringify(result[0]));
         }
-        pool.releaseConnection(function(e){});
+        pool.releaseConnection(function (e) { });
       });
     }
   });
 });
+
+//삭제요청 처리..
+router.get("/delete", function (req, res, next) {
+  //get방식의 파라미터는 query 
+  var member_id = req.query.member_id;
+
+  pool.getConnection(function (error, con) {
+    if (error) {
+      console.log(error);
+    } else {
+      var sql = "delete from member where member_id=?";
+      con.query(sql, [member_id], function (err, result) {
+        if (err) {
+          console.log(err);
+        } else {
+          var obj = null;
+          if (result.affectedRows == 0) {
+            obj = { result: 0 };
+          } else {
+            obj = { result: 1 };
+          }
+          res.writeHead(200, { "Content-Type": "text/json" });
+          res.end(JSON.stringify(obj));
+        }
+        pool.releaseConnection(function (e) { });
+
+      });
+    }
+  });
+
+});
+
 module.exports = router;
