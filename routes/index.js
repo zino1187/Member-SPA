@@ -116,4 +116,39 @@ router.get("/delete", function (req, res, next) {
 
 });
 
+//수정요청 처리..
+router.post("/edit", function(req, res, next){
+  var name = req.body.name;
+  var email = req.body.email;
+  var age = req.body.age;
+  var member_id=req.body.member_id;
+
+
+  pool.getConnection(function (error, con) {
+    if (error) {
+      console.log(error);
+    } else {
+      var sql = "update member set name=?";
+      sql+=", email=?, age=? where member_id=?";
+
+      con.query(sql, [name, email, age,member_id], function (err, result) {
+        if (err) {
+          console.log(err);
+        } else {
+          var obj = null;
+          if (result.affectedRows == 0) {
+            obj = { result: 0 };
+          } else {
+            obj = { result: 1 };
+          }
+          res.writeHead(200, { "Content-Type": "text/json" });
+          res.end(JSON.stringify(obj));
+        }
+        pool.releaseConnection(function (e) { });
+      });
+    }
+  });  
+
+})
+
 module.exports = router;

@@ -155,6 +155,33 @@
       }
 
       //수정
+      $scope.edit=function(){
+        if(!confirm("수정하실래요?")){
+          return;
+        }
+
+        $http({
+          url:"/member/edit",
+          method:"post",
+          data:JSON.stringify({
+            name:$scope.name ,
+            email:$scope.email,
+            age:$scope.age,
+            member_id:$scope.member_id
+          })
+        }).then(function(response){
+          if(response.data.result==0){
+            alert("수정실패");
+          } else{
+            alert("수정성공");  
+            //리스트 재호출!!!
+            $rootScope.getList(); 
+          } 
+
+        });
+        
+      }
+      
     });
 
   </script>
