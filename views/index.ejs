@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    *{margin:0px;padding:0px;}
+    .wrapper{
+      width:100%;
+      height:600px;  
+      background:yellow;
+    }
+    .registSide{
+      width:20%;
+      height:100%;
+      background:dodgerblue;  
+      float:left;/*block 형인 태그 요소를 띄운다..*/
+      text-align: center;
+    }
+    .center{
+      width:60%;
+      height:100%;
+      background:#ccc;
+      float:left;
+    }
+    .detailSide{
+      width:20%;
+      height:100%;
+      background:#81e46d;
+      float:left;
+      text-align: center;
+    }
+
+    input[type=text]{
+      width:90%;
+    }
+    table {
+      border-collapse: collapse;
+      border-spacing: 0;
+      width: 100%;
+      border: 1px solid #ddd;
+    }
+
+    th, td {
+        text-align: left;
+        padding: 16px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2
+    }    
+  </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+  <script>
+  //앱선언 
+  var myApp=angular.module("myApp",[]);
+  myApp.run(function($rootScope){
+  });
+
+  myApp.controller("registController", function($scope, $http){
+    $scope.regist=function(){
+      $http({
+        url:"/member/regist",
+        method:"post",
+        data:JSON.stringify({
+          name:$scope.name,
+          email:$scope.email,
+          age:$scope.age  
+        })
+      }).then(function(response){
+        alert(response.data);
+      } , function(error_response){
+        alert(error_response.statusText);
+      });//ajax
+    }
+  });
+  myApp.controller("detailController", function($scope){
+
+});
+
+  </script>
+</head>
+
+<body>
+  <div class="wrapper" ng-app="myApp">
+    
+    <div class="registSide" ng-controller="registController">
+      <input type="text" placeholder="이름" ng-model="name"/>
+      <input type="text" placeholder="이메일" ng-model="email"/>
+      <input type="text" placeholder="나이" ng-model="age"/>
+      <button ng-click="regist()">등록</button>
+    </div>
+    <div class="center">
+
+      <div style="text-align: center">
+        <input type="text"/>        
+      </div>
+
+      <table>
+        <tr>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Points</th>
+        </tr>
+        <tr>
+          <td>Jill</td>
+          <td>Smith</td>
+          <td>50</td>
+        </tr>
+        <tr>
+          <td>Eve</td>
+          <td>Jackson</td>
+          <td>94</td>
+        </tr>
+        <tr>
+          <td>Adam</td>
+          <td>Johnson</td>
+          <td>67</td>
+        </tr>
+      </table>
+
+    </div>
+    <div class="detailSide" ng-controller="detailController">
+      <input type="text" placeholder="이름" />
+      <input type="text" placeholder="이메일" />
+      <input type="text" placeholder="나이" />
+      <button>수정</button>
+      <button>삭제</button>
+    </div>
+  </div>
+</body>
+
+</html>
