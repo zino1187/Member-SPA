@@ -71,7 +71,8 @@
           url: "/member/list",
           method: "get"
         }).then(function (response) {
-          alert(response.data);
+          //alert(response.data);
+          $rootScope.list=response.data;
         }, function (error_response) {
           alert(error_response.statusText);
         });
@@ -127,9 +128,9 @@
           <th>나이</th>
         </tr>
         <tr ng-repeat="x in list">
-          <td>Jill</td>
-          <td>Smith</td>
-          <td>50</td>
+          <td>{{x.name}}</td>
+          <td>{{x.email}}</td>
+          <td>{{x.age}}</td>
         </tr>
       </table>
 

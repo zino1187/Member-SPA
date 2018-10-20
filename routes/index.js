@@ -58,8 +58,6 @@ router.get("/list", function (req, res, next) {
       });
     }
   });
-
-
 });
 
 module.exports = router;
