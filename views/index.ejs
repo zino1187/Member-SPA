@@ -65,7 +65,7 @@
 
       //회원목록 가져오기!!!
       $rootScope.getList = function () {
-        alert("목록 지금 조회할께요");
+        //alert("목록 지금 조회할께요");
 
         $http({
           url: "/member/list",
@@ -82,7 +82,7 @@
     });
 
 
-    myApp.controller("registController", function ($scope, $http) {
+    myApp.controller("registController", function ($rootScope, $scope, $http) {
       $scope.regist = function () {
         $http({
           url: "/member/regist",
@@ -93,9 +93,12 @@
             age: $scope.age
           })
         }).then(function (response) {
-          alert(response.data);
-        }, function (error_response) {
-          alert(error_response.statusText);
+          //alert(response.data);
+          if(response.data.result==0){
+            alert("등록실패");
+          }else{
+            $rootScope.getList(); 
+          }
         });//ajax
       }
     });
