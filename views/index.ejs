@@ -134,7 +134,10 @@
       
       //삭제 
       $scope.del=function(id){
-        alert("당신이 삭제할 아이디는 "+ id);
+        //alert("당신이 삭제할 아이디는 "+ id);
+        if(!confirm("삭제하시겠습니까?")){
+          return;
+        }
 
         $http({
           url:"/member/delete",
